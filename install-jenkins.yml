@@ -1,0 +1,52 @@
+---
+- hosts: all
+  #user: hosts #hosts No es necesario indicar user si el playbook afecta a un grupo
+  become: yes
+  ignore_errors: true
+  environment:
+    http_proxy: http://proxy.gfi.es:8000
+    https_proxy: http://proxy.gfi.es:8000
+  vars:
+    base_packages:
+      - jenkins
+      - nginx
+      - curl
+
+  tasks:
+
+   - name: Add repo key Jenkins apt
+     apt_key:
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+      state: present
+     when: ansible_pkg_mgr == 'apt'
+     tags:
+      - jenkins
+
+
+   - name: Add repo Jenkins apt
+     apt_repository:
+      repo: deb https://pkg.jenkins.io/debian-stable binary/
+      #baseurl: https://pkg.jenkins.io/debian-stable binary/jenkins_2.7.4_all.deb 
+      update_cache: yes
+      #gpgkey: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+     when: ansible_pkg_mgr == 'apt'
+     tags:
+      - jenkins
+
+   - name: instala jenkins, nginx y curl con apt
+     apt:
+      name: "{{ item }}" #variable que toma los valores de with_items
+      update_cache: yes
+      state: present  #si ponemos absent lo desinstala con latest instala el mas nuevo
+     with_items:
+      - "{{ base_packages }}" # recorre las variable declaradas en vars en base_packages
+     when: ansible_pkg_mgr == 'apt'
+     tags:
+      - instala
+
+   - name: inicia servicio jenkins
+     service:
+      name: jenkins
+      state: started
+      enabled: yes #lo inicia al arrancar
+
