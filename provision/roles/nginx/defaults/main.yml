@@ -1,0 +1,4 @@
+---
+nginx_packages:
+  - nginx
+force_nginx: False # por defecto esta en false aunque tiene prioridad los parametros que pasamos en meta, dependencies

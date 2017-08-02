@@ -1,0 +1,7 @@
+---
+# La carpeta meta administra las depencias entre roles
+# En este caso queremos generar y configurar la dependencia entre jenkis y nginx
+# Le indicamos donde tiene que buscar el archivo de configuración
+dependencies:
+  - { role: nginx, port_number: 8080, site_name: jenkins, force_nginx: True, config_file: 
+  roles/jenkins/templates/jenkins-nginx.j2 }

@@ -1,0 +1,9 @@
+---
+# La carpeta handlers nos sirve para reutilizar tasks usando notify
+
+#Reinicamos el service  
+- name: Reiniciar servicio nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes

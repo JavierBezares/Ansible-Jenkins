@@ -1,0 +1,40 @@
+---
+- name: instala nginx_packages
+  apt:
+   name: "{{ item }}" #variable que toma los valores de with_items
+   update_cache: yes
+   state: present  #si ponemos absent lo desinstala con latest instala el mas nuevo
+  with_items:
+   - "{{ nginx_packages }}" # recorre las variable declaradas en vars en nginx_packages
+  when: ansible_pkg_mgr == 'apt'
+
+# https://wiki.jenkins.io/display/JENKINS/Installing+Jenkins+on+Ubuntu
+# SI FORCE_NGINX ES TRUE
+
+# Elimina la config del puerto 80 de nginx para reconfigurarlo nosotros despues con templates
+- name: Eliminar fichero default configuration de nginx
+  file:
+   path: /etc/nginx/sites-enabled/default
+   state: absent
+  when: force_nginx == True
+
+#Busca el template en src (a donde apunte config_file) y lo genera en dest
+- name: Instalar configuracion deseada
+  template:
+   src: "{{ config_file }}"
+   dest: /etc/nginx/sites-available/{{ site_name }}
+   owner: root
+   group: root
+   mode: 0644
+  when: force_nginx == True
+
+#Link your configuration from sites-available to sites-enabled
+- name: Activa nuevo site con la config nueva
+  file:
+   src: /etc/nginx/sites-available/{{ site_name }}
+   dest: /etc/nginx/sites-enabled/{{ site_name }}
+   state: link
+  when: force_nginx == True
+  notify: Reiniciar servicio nginx #si se activa el task "Activa nuevo..." se activa tambien el de "Reiniciar ..."
+  #notify siempre busca en la carpeta handlers la tarea con el nombre indicado
+  #notify busca en la carpeta handlers pero dentro del rol en el que este

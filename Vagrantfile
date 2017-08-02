@@ -25,12 +25,17 @@ Vagrant.configure("2") do |config|
       ansible.playbook = "provision/install.yml"
       ansible.host_key_checking = false #acepta el certificado publico de la maquina remota sin preguntar
       ansible.sudo = true
-      ansible.tags = ['common', 'jenkins'] # indica los tags de ejecucion
+      ansible.tags = ['jenkins'] # indica los tags de ejecucion
     end
 
-  #si en el navegador web en centos vamos a localhost:8080 nos lleva a la maquina vagrant ubuntu al puerto 80 donde esta nginx
+  # nuestro puerto local 8080 nos lleva al puerto 80 del ubuntu virtualizado donde esta nginx
+  # lo hemos redirigido de forma que el puerto virtual 80 de nginx apunte al puerto virtual 8080 donde esta jenkins
+  # LOCAL 8080 --> 80 VIRT NGINX
+  # 80 VIRT NGINX ---> VIRT LOCAL 8080 JENKINS
+  # Al final nuestro local 8080 nos lleva al virtual 8080 donde esta jenkins
   config.vm.network "forwarded_port", host: 8080, guest: 80, auto_correct: true 
   #si vamos a localhost:8081 nos lleva a la maquina vagrant ubuntu al puerto 8080 donde esta jenkins
+  # LOCAL 8081 ---> VIRT LOCAL 8080 JENKINS
   config.vm.network "forwarded_port", host: 8081, guest: 8080, auto_correct: true 
 
 
