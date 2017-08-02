@@ -25,14 +25,14 @@ Vagrant.configure("2") do |config|
       ansible.playbook = "provision/install.yml"
       ansible.host_key_checking = false #acepta el certificado publico de la maquina remota sin preguntar
       ansible.sudo = true
-      ansible.tags = ['jenkins'] # indica los tags de ejecucion
+      ansible.tags = ['common', 'jenkins'] # indica los tags de ejecucion
     end
 
   # nuestro puerto local 8080 nos lleva al puerto 80 del ubuntu virtualizado donde esta nginx
   # lo hemos redirigido de forma que el puerto virtual 80 de nginx apunte al puerto virtual 8080 donde esta jenkins
   # LOCAL 8080 --> 80 VIRT NGINX
   # 80 VIRT NGINX ---> VIRT LOCAL 8080 JENKINS
-  # Al final nuestro local 8080 nos lleva al virtual 8080 donde esta jenkins
+  # Al final nuestro local 8080 nos lleva al virtual 8080 donde esta JENKINS
   config.vm.network "forwarded_port", host: 8080, guest: 80, auto_correct: true 
   #si vamos a localhost:8081 nos lleva a la maquina vagrant ubuntu al puerto 8080 donde esta jenkins
   # LOCAL 8081 ---> VIRT LOCAL 8080 JENKINS
@@ -101,5 +101,10 @@ Vagrant.configure("2") do |config|
     export http_proxy=http://proxy.gfi.es:8000
     export https_proxy=http://proxy.gfi.es:8000
     apt-get install -y python2.7
+    ln -s /usr/bin/python2.7 /usr/bin/python
+    touch .ssh/authorized_keys
+    echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6UdDRJiDcA9urByYbXzmtIHjVooO9QVh7+gMiyy1Fisx00IimaI3vJ6BxiHW0rMwcu9oKxOBRNfKl0av0YpPYoFz12fYZbrklm0lMFdptAPFbOqhIhn6vPwnR67ieima5/gg6YDJYRvx8MUMcPE21o5g8vrE1oa9ljNBJLPLut3DIoG4YsRl+s5fLgECsllfZ16iFePTc3nNVFViaAq4z2fHv6sjAte20aQUY8O13STi+OWrAnVlEakZs2jYhOqAq1y/wZkMi0d95fDDUV81B9ys19elVPMJPRvuMEV13Y6FAlBg9BlTh4SwTCsDZncME4TeQyitD2+iSVxjND2pr" >> .ssh/authorized_keys
+    
+
    SHELL
 end
