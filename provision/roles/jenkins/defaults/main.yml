@@ -1,0 +1,5 @@
+---
+jenkins_packages:
+  - jenkins
+jenkins_public_key_url: https://pkg.jenkins.io/debian-stable/jenkins.io.key #solo funciona si lo pone en este formato todo seguido
+jenkins_repo_url: deb https://pkg.jenkins.io/debian-stable binary/

@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.define "ubuntuJen" do |one|
     one.vm.box = "ubuntu/xenial64"
-    one.vm.boot_timeout = 60 #si tarda mas de 1 min en hacer check de updates de la box pasa a otra cosa
+    #one.vm.boot_timeout = 60 #si tarda mas de 1 min en hacer check de updates de la box pasa a otra cosa
     one.vm.network "private_network", ip:"123.123.123.5"
     config.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
@@ -22,9 +22,10 @@ Vagrant.configure("2") do |config|
       vb.cpus = "1"
     end
     config.vm.provision "ansible" do |ansible|
-      ansible.playbook = "install-jenkins.yml"
+      ansible.playbook = "provision/install.yml"
       ansible.host_key_checking = false #acepta el certificado publico de la maquina remota sin preguntar
       ansible.sudo = true
+      ansible.tags = ['common', 'jenkins'] # indica los tags de ejecucion
     end
 
   #si en el navegador web en centos vamos a localhost:8080 nos lleva a la maquina vagrant ubuntu al puerto 80 donde esta nginx
