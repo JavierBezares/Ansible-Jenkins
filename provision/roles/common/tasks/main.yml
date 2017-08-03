@@ -7,12 +7,3 @@
   with_items:
    - "{{ common_packages }}" # recorre las variable declaradas en vars en base_packages
   when: ansible_pkg_mgr == 'apt'
-
-# Cambia la linea de permit root login para poner un yes
-- name: Permite root ssh login en ubuntu
-  lineinfile: 
-    dest: /etc/ssh/sshd_config 
-    regexp: 'PermitRootLogin prohibit-password' 
-    line: 'PermitRootLogin yes'       
-    state: present
-  when: ansible_pkg_mgr == 'apt'

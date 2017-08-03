@@ -103,8 +103,96 @@ Vagrant.configure("2") do |config|
     apt-get install -y python2.7
     ln -s /usr/bin/python2.7 /usr/bin/python
     touch .ssh/authorized_keys
-    echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6UdDRJiDcA9urByYbXzmtIHjVooO9QVh7+gMiyy1Fisx00IimaI3vJ6BxiHW0rMwcu9oKxOBRNfKl0av0YpPYoFz12fYZbrklm0lMFdptAPFbOqhIhn6vPwnR67ieima5/gg6YDJYRvx8MUMcPE21o5g8vrE1oa9ljNBJLPLut3DIoG4YsRl+s5fLgECsllfZ16iFePTc3nNVFViaAq4z2fHv6sjAte20aQUY8O13STi+OWrAnVlEakZs2jYhOqAq1y/wZkMi0d95fDDUV81B9ys19elVPMJPRvuMEV13Y6FAlBg9BlTh4SwTCsDZncME4TeQyitD2+iSVxjND2pr" >> .ssh/authorized_keys
-    
+    echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDaRx65vdIS4zH9ywiGIVblEZEcDpgPd0Sc3A3icNi3amD873Vs08QraQG0aV1vODjpo+ogfWFZ4tt4VZ6XmRuaXJGacTCkFk3unFmV5OxzAjBYtxQr/wJIAMCx9lzHXAUvwOTrVcKq8BHi1I/AILZcvUil1Z3/LUwzSm32aNGtRjhog/ElsyZfDGLU+vrHX6NE8aYACRw+ilbmKySTzGSAhssmgpN9LvYPaSddJpBR0DvYKOwPbMd5YeH4WewMSiNba18q1K8EuucxhgFb2Ywle+28yWx73fluOihpTrkuFTR7tcwnQf8tR5/HWFlPNm7GDwGZ+NIfUtHgC6vCHe/9 javier@localhost.localdomain" >> ~/.ssh/authorized_keys
+    echo "# Package generated configuration file
+# See the sshd_config(5) manpage for details
+
+# What ports, IPs and protocols we listen for
+Port 22
+# Use these options to restrict which interfaces/protocols sshd will bind to
+#ListenAddress ::
+#ListenAddress 0.0.0.0
+Protocol 2
+# HostKeys for protocol version 2
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_dsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+#Privilege Separation is turned on for security
+UsePrivilegeSeparation yes
+
+# Lifetime and size of ephemeral version 1 server key
+KeyRegenerationInterval 3600
+ServerKeyBits 1024
+
+# Logging
+SyslogFacility AUTH
+LogLevel INFO
+
+# Authentication:
+LoginGraceTime 120
+PermitRootLogin yes
+StrictModes yes
+
+RSAAuthentication yes
+PubkeyAuthentication yes
+#AuthorizedKeysFile %h/.ssh/authorized_keys
+
+# Don't read the user's ~/.rhosts and ~/.shosts files
+IgnoreRhosts yes
+# For this to work you will also need host keys in /etc/ssh_known_hosts
+RhostsRSAAuthentication no
+# similar for protocol version 2
+HostbasedAuthentication no
+# Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
+#IgnoreUserKnownHosts yes
+
+# To enable empty passwords, change to yes (NOT RECOMMENDED)
+PermitEmptyPasswords no
+
+# Change to yes to enable challenge-response passwords (beware issues with
+# some PAM modules and threads)
+ChallengeResponseAuthentication no
+
+# Change to no to disable tunnelled clear text passwords
+PasswordAuthentication yes
+
+# Kerberos options
+#KerberosAuthentication no
+#KerberosGetAFSToken no
+#KerberosOrLocalPasswd yes
+#KerberosTicketCleanup yes
+
+# GSSAPI options
+#GSSAPIAuthentication no
+#GSSAPICleanupCredentials yes
+
+X11Forwarding yes
+X11DisplayOffset 10
+PrintMotd no
+PrintLastLog yes
+TCPKeepAlive yes
+#UseLogin no
+
+#MaxStartups 10:30:60
+#Banner /etc/issue.net
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+Subsystem sftp /usr/lib/openssh/sftp-server
+
+# Set this to 'yes' to enable PAM authentication, account processing,
+# and session processing. If this is enabled, PAM authentication will
+# be allowed through the ChallengeResponseAuthentication and
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication via ChallengeResponseAuthentication may bypass
+# the setting of "PermitRootLogin without-password".
+# If you just want the PAM account and session checks to run without
+# PAM authentication, then enable this but set PasswordAuthentication
+# and ChallengeResponseAuthentication to 'no'.
+UsePAM yes
+" > /etc/ssh/sshd_config
 
    SHELL
 end
