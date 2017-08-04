@@ -1,4 +1,5 @@
 Repositorio que conecta ansible y jenkins con una maquina vagrant y una maquina remota en AWS.
+
 En Vagrant hacemos:
  - Instalamos una box de ubuntu 16
  - Llamamos a Ansible para provisionar la maquina ubuntu
@@ -8,10 +9,13 @@ En Vagrant hacemos:
  - Instalamos python 2.7 necesario para usar ansible (hacemos un link con la carpeta de python)
  - Copiamos key en la carpeta de ubuntu authorized keys (previamente generamos key en host)
  - Cambiamos sshd_config para permitir RootLogin por ssh
+
 En la parte de Ansible hacemos:
  - Instalamos Nginx
  - Instalamos Jenkins
  - Podemos conectar con vagrant o con AWS dependiendo de que host queramos
+
+
 En AWS tenemos:
  - Una maquina ubuntu instalada
  
