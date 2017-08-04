@@ -1,3 +1,5 @@
+Proyecto original: https://www.youtube.com/playlist?list=PLF3EgRIVV_yQzl6ZiT06MDWGvscglDt5a
+
 Repositorio que conecta ansible y jenkins con una maquina vagrant y una maquina remota en AWS.
 
 En Vagrant hacemos:
